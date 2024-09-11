@@ -57,13 +57,11 @@ async def generate(request: Request) -> Response:
 async def _generate(request_dict: dict, raw_request: Request) -> Response:
     prompt = request_dict.pop("prompt")
     stream = request_dict.pop("stream", False)
-    # jimpang lora
-    lora_id = request_dict.pop("lora_id", None)
-    lora_path = request_dict.pop("lora_path", None)
     sampling_params = SamplingParams(**request_dict)
     request_id = random_uuid()
 
     assert engine is not None
+    results_generator = engine.generate(prompt, sampling_params, request_id)
     # jimpang add
     inputs = prompt
     if prompt and len(prompt) > 0:
@@ -72,7 +70,7 @@ async def _generate(request_dict: dict, raw_request: Request) -> Response:
             inputs = TokensPrompt(prompt_token_ids=prompt)
 
     results_generator = engine.generate(
-        prompt=inputs, sampling_params=sampling_params, request_id=request_id)
+        inputs=inputs, sampling_params=sampling_params, request_id=request_id)
 
     # Streaming case
     async def stream_results() -> AsyncGenerator[bytes, None]:
@@ -80,7 +78,7 @@ async def _generate(request_dict: dict, raw_request: Request) -> Response:
             text_outputs = [
                 output.text for output in request_output.outputs
             ]
-            output_tokens = [list(output.token_ids) for output in request_output.outputs]
+            output_tokens = [output.token_ids for output in request_output.outputs]
             logprobs = [[{k: asdict(v) for k, v in logprobs.items()} for logprobs in
                          output.logprobs] if output.logprobs is not None else None for output in request_output.outputs]
             ret = {"text": text_outputs, "output_token_ids": output_tokens, "logprobs": logprobs}
