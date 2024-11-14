@@ -63,7 +63,6 @@ async def _generate(request_dict: dict, raw_request: Request) -> Response:
     request_id = random_uuid()
 
     assert engine is not None
-    results_generator = engine.generate(prompt, sampling_params, request_id)
     # jimpang add
     inputs = prompt
     if prompt and len(prompt) > 0:
@@ -72,7 +71,7 @@ async def _generate(request_dict: dict, raw_request: Request) -> Response:
             inputs = TokensPrompt(prompt_token_ids=prompt)
 
     results_generator = engine.generate(
-        inputs=inputs, sampling_params=sampling_params, request_id=request_id)
+        prompt=inputs, sampling_params=sampling_params, request_id=request_id)
 
     # Streaming case
     async def stream_results() -> AsyncGenerator[bytes, None]:
