@@ -827,10 +827,10 @@ def _get_query_key_seq_metadata(
     attn_type: str,
 ) -> tuple:
     """
-    Returns sequence metadata for key and query based on the specified 
+    Returns sequence metadata for key and query based on the specified
     attention type and whether input is a prompt.
 
-    This function computes the starting locations and maximum sequence lengths 
+    This function computes the starting locations and maximum sequence lengths
     for key and query sequences for different attention types.
 
     Args:
@@ -888,15 +888,15 @@ def _get_query_key_seq_metadata(
 
 def _get_causal_option(attn_type: str) -> bool:
     """
-    Determine whether the given attention type is suitable for causal 
+    Determine whether the given attention type is suitable for causal
     attention mechanisms.
 
     Args:
         attn_type (AttentionType): The type of attention being evaluated
 
     Returns:
-        bool: Returns `True` if the attention type is suitable for causal 
-        attention (i.e., not encoder, encoder-only, or encoder-decoder), 
+        bool: Returns `True` if the attention type is suitable for causal
+        attention (i.e., not encoder, encoder-only, or encoder-decoder),
         otherwise returns `False`.
     """
     return not (attn_type == AttentionType.ENCODER
