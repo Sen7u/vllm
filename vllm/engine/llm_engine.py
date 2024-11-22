@@ -784,9 +784,6 @@ class LLMEngine:
                 # Empty prompt check is handled later
                 return
             max_input_id = max(prompt_ids)
-            if max_input_id > tokenizer.max_token_id:
-                raise ValueError(
-                    "Token id {} is out of vocabulary".format(max_input_id))
 
     def _create_sequence_group_with_sampling(
         self,
