@@ -1,4 +1,3 @@
-# SPDX-License-Identifier: Apache-2.0
 """
 NOTE: This API server is used only for demonstrating usage of AsyncEngine
 and simple performance benchmarks. It is not intended for production use.
